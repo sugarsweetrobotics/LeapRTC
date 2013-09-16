@@ -9,6 +9,7 @@
 
 #include "LeapRTC.h"
 
+#include "Leap.h"
 // Module specification
 // <rtc-template block="module_spec">
 static const char* leaprtc_spec[] =
@@ -103,26 +104,64 @@ RTC::ReturnCode_t LeapRTC::onShutdown(RTC::UniqueId ec_id)
 }
 */
 
-/*
+
 RTC::ReturnCode_t LeapRTC::onActivated(RTC::UniqueId ec_id)
 {
+  m_pLeapListener = new LeapListener();
+  m_pLeapController = new Leap::Controller();
+  m_pLeapController->addListener(*m_pLeapListener);
+
   return RTC::RTC_OK;
 }
-*/
 
-/*
+
+
 RTC::ReturnCode_t LeapRTC::onDeactivated(RTC::UniqueId ec_id)
 {
+  m_pLeapController->removeListener(*m_pLeapListener);
+  delete m_pLeapController;
+  delete m_pLeapListener;
   return RTC::RTC_OK;
 }
-*/
 
-/*
+inline void operator<<=(ssr::Vector &dst, const Leap::Vector &src) {
+  dst.x = src.x;
+  dst.y = src.y;
+  dst.z = src.z;
+}
+
+inline void operator<<=(ssr::Orientation &dst, const Leap::Vector &src) {
+  dst.pitch = src.pitch();
+  dst.roll = src.roll();
+  dst.yaw = src.yaw();
+}
+
 RTC::ReturnCode_t LeapRTC::onExecute(RTC::UniqueId ec_id)
 {
+  Leap::Frame &frame = m_pLeapListener->m_Frame;
+  m_frame.id = frame.id();
+  m_frame.timestamp = frame.timestamp();
+  int nHands = frame.hands().count();
+  m_frame.hands.length(nHands);
+  for (int i = 0;i < nHands;i++) {
+    m_frame.hands[i].palmPosition <<= frame.hands()[i].palmPosition();
+    m_frame.hands[i].palmNormal   <<= frame.hands()[i].palmNormal();
+    m_frame.hands[i].palmDirection <<= frame.hands()[i].direction();
+    m_frame.hands[i].sphereCenter  <<= frame.hands()[i].sphereCenter();
+    m_frame.hands[i].sphereRadius = frame.hands()[i].sphereRadius();
+    m_frame.hands[i].palmOrientation <<= frame.hands()[i].direction();
+    
+    int nFinger = frame.hands()[i].fingers().count();
+    m_frame.hands[i].fingers.length(nFinger);
+    for (int j = 0;j < nFinger;j++) {
+      m_frame.hands[i].fingers[j].tipPosition <<= frame.hands()[i].fingers()[j].tipPosition();
+      m_frame.hands[i].fingers[j].touchZone = frame.hands()[i].fingers()[j].touchZone();
+    }
+  }
+  m_frameOut.write();
   return RTC::RTC_OK;
 }
-*/
+
 
 /*
 RTC::ReturnCode_t LeapRTC::onAborting(RTC::UniqueId ec_id)

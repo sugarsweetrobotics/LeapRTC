@@ -16,9 +16,14 @@ module ssr {
     double yaw;
   };
 
+  typedef long Zone;
+  const Zone ZONE_NONE = 0;
+  const Zone ZONE_HOVERING = 1;
+  const Zone ZONE_TOUCHING = 2;
 
   struct Finger {
     Vector tipPosition;
+    Zone touchZone;
   };
 
   struct Hand {
@@ -51,7 +56,7 @@ module ssr {
      * 
      * @returns The Vector pointing from the palm position toward the fingers.
      */
-    Vector direction;
+    Vector palmDirection;
 
     /**
      * The radius of a sphere fit to the curvature of this hand.
@@ -60,11 +65,11 @@ module ssr {
      * size of the sphere decreases as the fingers are curled into a fist.
      * @returns The radius of the sphere in millimeters.
      */
-    Vector shereCenter;
+    Vector sphereCenter;
     
-    double shereRadius;
+    double sphereRadius;
 
-    Orientation orientation;
+    Orientation palmOrientation;
 
     sequence<Finger> fingers;
   };

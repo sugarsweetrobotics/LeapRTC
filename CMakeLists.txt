@@ -35,6 +35,11 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
    SET(CMAKE_CXX_COMPILER "g++")
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
+set(LEAP_SDK_DIR $ENV{LEAP_SDK_PATH})
+set(LEAP_SDK_INCLUDE_DIR ${LEAP_SDK_DIR}/include)
+set(LEAP_SDK_LIBRARY_DIR ${LEAP_SDK_DIR}/lib)
+set(LEAP_SDK_LIBRARIES Leap)
+
 
 # Set up installation directories
 set(BIN_INSTALL_DIR "components/bin")
