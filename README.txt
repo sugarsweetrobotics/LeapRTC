@@ -28,7 +28,9 @@ $ cmake ../
 $ make 
 
 Then you can find your LeapRTC in $path_to_leaprtc/build/src directory.
-
+You must put libleap.dylib in the same directory of your RTC. 
+If you use LeapRTCComp, you must put the libleap.dylib with it.
+If you use LeapRTC.dylib as a loadable module for rtcd, you must put the libleap.dylib with the LeapRTC.dylib.
 
 ======================================================================
     Basic Information
