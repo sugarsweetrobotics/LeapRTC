@@ -159,6 +159,55 @@ RTC::ReturnCode_t LeapRTC::onExecute(RTC::UniqueId ec_id)
     }
   }
   m_frameOut.write();
+
+  const Leap::GestureList &gestures = m_pLeapListener->m_Frame.gestures();
+  //for(int i = 0;i < gestures.count();i++) {
+  if(gestures.count() > 0) {
+    const Leap::Gesture& gesture = gestures[0];
+    m_gesture.id = gesture.id();
+    //m_gesture.timestamp = gestures.timestamp();
+    m_gesture.type = gesture.type();
+    switch(gesture.type()) {
+    case Leap::Gesture::TYPE_CIRCLE: {
+      const Leap::CircleGesture circle = gesture;
+      m_gesture.circle.state = gesture.state();
+      m_gesture.circle.progress = circle.progress();
+      m_gesture.circle.radius = circle.radius();
+      m_gesture.circle.center <<= circle.center();
+      //m_gesture.circle.direction <<= gesture.direction();
+      //m_gesture.circle.speed = gesture.speed();
+      break;
+    }
+    case Leap::Gesture::TYPE_SWIPE: {
+      const Leap::SwipeGesture swipe = gesture;
+      m_gesture.swipe.state = gesture.state();
+      m_gesture.swipe.direction <<= swipe.direction();
+      //m_gesture.swipe.position  <<= swipe.position();
+      m_gesture.swipe.speed = swipe.speed();
+      break;
+    }
+    case Leap::Gesture::TYPE_KEY_TAP: {
+      const Leap::KeyTapGesture key = gesture;
+      m_gesture.key.state = gesture.state();
+      m_gesture.key.direction <<= key.direction();
+      m_gesture.key.position  <<= key.position();
+      break;
+    }
+    case Leap::Gesture::TYPE_SCREEN_TAP: {
+      const Leap::ScreenTapGesture screen = gesture;
+      m_gesture.screen.state = gesture.state();
+      m_gesture.screen.direction <<= screen.direction();
+      m_gesture.screen.position  <<= screen.position();
+      break;
+    }
+    case Leap::Gesture::TYPE_INVALID: {
+      break;
+    }
+    }
+    m_gestureOut.write();
+  }
+
+
   return RTC::RTC_OK;
 }
 
