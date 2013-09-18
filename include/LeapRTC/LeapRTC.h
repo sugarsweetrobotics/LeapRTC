@@ -249,10 +249,10 @@ class LeapRTC
   /*!
    */
   OutPort<ssr::Frame> m_frameOut;
-  ssr::GestureFrame m_gesture;
+  //ssr::GestureFrame m_gesture;
   /*!
    */
-  OutPort<ssr::GestureFrame> m_gestureOut;
+  //OutPort<ssr::GestureFrame> m_gestureOut;
   
   // </rtc-template>
 

@@ -74,13 +74,6 @@ module ssr {
     sequence<Finger> fingers;
   };
 
-  struct Frame {
-    long id;
-    long long timestamp;
-    
-    sequence<Hand> hands;
-  };
-
   typedef long GestureState;
 
 
@@ -96,13 +89,14 @@ module ssr {
     double progress;
     double radius;
     Vector center;
-    Vector direction;
-    double speed;
+    Vector normal;
   };
   
 
   struct SwipeGesture {
     GestureState state;
+    Vector startPosition;
+    Vector position;
     Vector direction;
     double speed;
   };
@@ -128,12 +122,21 @@ module ssr {
 
   struct GestureFrame {
     long id;
-    long long timestamp;
     GestureType type;
     CircleGesture circle;
     SwipeGesture swipe;
     KeyTapGesture key;
     ScreenTapGesture screen;
   };
+
+
+  struct Frame {
+    long id;
+    long long timestamp;
+    
+    sequence<Hand> hands;
+    sequence<GestureFrame> gestures;
+  };
+
 
 };
