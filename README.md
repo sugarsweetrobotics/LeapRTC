@@ -16,7 +16,9 @@ https://github.com/sugarsweetrobotic/LeapTest_py.git
 
 # Author
 Yuki Suga (Sugar Sweet Robotics CO. LTD.)
+
 E-mail: ysuga@sugarsweetrobotics.com
+
 URL: http://sugarsweetrobotics.com
 
 # License
@@ -35,11 +37,11 @@ Set Environmental Variable LEAP_SDK_PATH to your LeapDevelopmentKit
  as you can find Leap.h by ( $LEAP_SDK_PATH/include/Leap.h )
 Then, cmake and make.
 
-$ cd $path_to_leaprtc
-$ mkdir build
-$ cd build
-$ cmake ../
-$ make 
+    $ cd $path_to_leaprtc
+    $ mkdir build
+    $ cd build
+    $ cmake ../
+    $ make 
 
 Then you can find your LeapRTC in $path_to_leaprtc/build/src directory.
 You must put libleap.dylib in the same directory of your RTC. 
