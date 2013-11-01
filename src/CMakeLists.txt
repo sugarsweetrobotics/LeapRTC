@@ -50,6 +50,21 @@ add_executable(${PROJECT_NAME}Comp ${standalone_srcs}
   ${comp_srcs} ${comp_headers} ${ALL_IDL_SRCS})
 target_link_libraries(${PROJECT_NAME}Comp ${OPENRTM_LIBRARIES} ${LEAP_SDK_LIBRARIES})
 
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+# ForMac
+#add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#        "${LEAP_SDK_LIBRARY_DIR}/libLeap.dylib"
+#        $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
+add_custom_command(TARGET ${PROJECT_NAME} 
+    POST_BUILD COMMAND 
+    ${CMAKE_INSTALL_NAME_TOOL} -change "@loader_path/libLeap.dylib" "${LEAP_SDK_LIBRARY_DIR}/libLeap.dylib"
+    $<TARGET_FILE:${PROJECT_NAME}>)
+
+endif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+
 install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}Comp
     EXPORT ${PROJECT_NAME}
     RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT component
